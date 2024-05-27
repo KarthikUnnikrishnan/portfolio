@@ -8,6 +8,7 @@
 }
 body {
   background: #06141f;
+  color: #ffffff;
 }
 
 header{
@@ -47,5 +48,68 @@ header{
 }
 
 .navbar a:hover {
-  color: #00abf0;
+  color: #ecdabe;
+}
+
+#home{
+  height: 100vh;
+  padding: 0 8%;
+  display: flex;
+  align-items: center;
+}
+
+.home__content{
+  max-width: 650px;
+}
+
+.home__content h1 {
+  font-size: 56px;
+  line-height: 100%;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.home__content h3 {
+  font-size: 26px;
+  color: #ecdabe;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.home__content p {
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+.home__content .btn-box {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 10;
+  height: 40px;
+}
+
+.btn-box a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+  height: 100%;
+  background-color: #ecdabe;
+  border:1px solid #ecdabe;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #3d3d3d;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-box a:hover{
+  color: #000000;
+  background-color: #fff5e5;
+}
+
+.btn-box i {
+  margin-right: 10px;
 }
