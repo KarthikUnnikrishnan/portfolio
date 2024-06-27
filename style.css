@@ -20,14 +20,14 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 200px;
-  border: 2px solid #eBeBeB;
+  gap: 400px;
+  border: 1px solid #eBeBeB;
   position: absolute;
-  top: 16px;
   left: 50%;
   transform: translateX(-50%);
-  border-radius: 16px;
-  padding-top: 10px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  padding-top: 20px;
   padding-bottom: 10px;
   padding-left: 20px;
   padding-right: 20px;
@@ -35,8 +35,8 @@ nav {
 
 nav .logo a{
   font-family: DM Serif Display, 'inter',sans-serif;
-  font-size: 20px;
-  line-height: 0%;
+  font-size: 35px;
+  line-height: 32px;
   color: #3f3f3f;
   font-weight: 900;
 }
@@ -44,13 +44,13 @@ nav .logo a{
 
 nav .nav-links{
   display: flex;
-  gap: 16px;
+  gap: 20px;
   color: #000;
 }
 
 nav .nav-links a{
-  color: #505050;
-  font-size: 16px;
+  color: #636363;
+  font-size: 20px;
   font-weight: 500;
   transition: all 0.3s ease;
 }
