@@ -1,11 +1,13 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Inter", sans-serif;
+  font-family: 'Roboto',sans-serif;
 }
 
 a {
@@ -20,17 +22,9 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 400px;
-  border: 1px solid #eBeBeB;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
-  padding-top: 20px;
-  padding-bottom: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
+  gap: 500px;
+  border-bottom: 1px solid #eBeBeB;
+  padding: 20px 120px;
 }
 
 nav .logo a{
@@ -41,14 +35,15 @@ nav .logo a{
   font-weight: 900;
 }
 
-
 nav .nav-links{
+  font-family: 'Roboto';
   display: flex;
   gap: 20px;
   color: #000;
 }
 
 nav .nav-links a{
+  font-family: 'Roboto';
   color: #636363;
   font-size: 20px;
   font-weight: 500;
