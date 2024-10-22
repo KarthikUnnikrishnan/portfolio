@@ -53,3 +53,76 @@ nav .nav-links a{
 nav .nav-links a:hover{
   color: #000;
 }
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  height: 80vh;
+  background: url('https://source.unsplash.com/random/1920x1080') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.container {
+  text-align: center;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.animated-title {
+  color: #000;
+  font-size: 2.5em;
+  margin: 0;
+  animation: slideIn 1s ease-in-out forwards;
+}
+
+p {
+  margin-top: 15px;
+  color: grey;
+  font-size: 1.2em;
+  animation: fadeIn 1.5s ease-in forwards;
+}
+
+.loader {
+  border: 8px solid rgba(255, 255, 255, 0.3);
+  border-top: 8px solid #ffcc00;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+  }
+  40% {
+      transform: translateY(-20px);
+  }
+  60% {
+      transform: translateY(-10px);
+  }
+}
