@@ -377,19 +377,212 @@ footer{padding:5rem 4rem 3rem;position:relative;overflow:hidden;background:var(-
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}
 .d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-/* ── MOBILE ── */
+/* ── HAMBURGER (mobile only) ── */
+.ham{
+  display:none;flex-direction:column;justify-content:center;
+  gap:5px;cursor:pointer;padding:4px;z-index:600;
+  background:none;border:none;
+}
+.ham span{
+  display:block;width:22px;height:2px;
+  background:var(--cream);border-radius:2px;
+  transition:transform .3s,opacity .3s,width .3s;
+}
+.ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.ham.open span:nth-child(2){opacity:0;width:0}
+.ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* Mobile drawer */
+.mob-menu{
+  display:none;
+  position:fixed;inset:0;z-index:400;
+  background:rgba(20,20,18,.98);backdrop-filter:blur(20px);
+  flex-direction:column;justify-content:center;align-items:center;gap:2.5rem;
+  opacity:0;pointer-events:none;
+  transition:opacity .35s;
+}
+.mob-menu.open{opacity:1;pointer-events:all}
+.mob-menu a{
+  font-family:var(--serif);font-size:2.2rem;font-weight:700;
+  color:var(--cream);letter-spacing:-.01em;
+  transition:color .2s;
+}
+.mob-menu a:hover{color:var(--red)}
+.mob-menu .mob-cta{
+  margin-top:1rem;background:var(--red);color:#fff;
+  font-family:var(--sans);font-size:.9rem;font-weight:500;
+  padding:.7rem 2rem;border-radius:6px;
+}
+
+/* Skills mobile pill grid (replaces floating) */
+.pill-mobile-grid{
+  display:none;
+  flex-wrap:wrap;gap:.6rem;
+  padding:1.5rem 0 2.5rem;
+}
+.pill-mobile-grid .pill{
+  position:static;animation:none !important;
+  transform:none !important;
+}
+
+/* ── BREAKPOINT: Tablet landscape / small desktop (1024px) ── */
+@media(max-width:1024px){
+  .nav{grid-template-columns:160px 1fr 200px;padding:1.5rem 2rem}
+  .nav.bg{padding:.85rem 2rem}
+  .wrap{padding:5rem 2.5rem}
+  #hero{padding:8rem 2.5rem 4.5rem}
+  .about-grid{grid-template-columns:1fr 1.6fr;gap:4rem}
+  .proj-grid{grid-template-columns:1fr 1fr}
+  .pcard[style*="grid-row:span 2"]{grid-row:span 1}
+  .films-top{gap:4rem}
+  .edu-row{grid-template-columns:150px 1fr 140px;gap:2.5rem}
+  .skill-block{padding:2.5rem 2.5rem 5rem}
+  .skills-head{padding:3rem 2.5rem 1.2rem}
+  .meta-row{grid-template-columns:1fr 1.2fr 1fr 1.2fr}
+}
+
+/* ── BREAKPOINT: Tablet portrait (768px) ── */
 @media(max-width:768px){
-  .nav{padding:1.2rem 1.5rem}
-  .nav{grid-template-columns:1fr 1fr}
-  .nav-mid{display:none}
-  .wrap,#hero,.skills-head,.skill-block{padding-left:1.5rem;padding-right:1.5rem}
-  .about-grid,.films-top{grid-template-columns:1fr;gap:3rem}
-  .proj-grid,.films-grid{grid-template-columns:1fr}
-  .edu-row{grid-template-columns:1fr;gap:.8rem}
-  .ovals-grid{gap:1rem}
-  .oval{width:160px;height:120px}
-  .foot-name{font-size:clamp(2.5rem,14vw,8rem)}
-  .hero-h1{font-size:clamp(2.8rem,12vw,6rem)}
+  /* Cursor off on touch */
+  body{cursor:auto}
+  #cur{display:none}
+
+  /* Nav — show hamburger, hide links */
+  .nav{
+    grid-template-columns:auto 1fr auto;
+    padding:1rem 1.4rem;align-items:center;
+  }
+  .nav.bg{padding:.8rem 1.4rem}
+  .nav-left{display:none}
+  .nav-mid a{font-size:1.05rem}
+  .ham{display:flex}
+  .mob-menu{display:flex}
+  .nav-link{display:none}
+  .btn-red{font-size:.78rem;padding:.48rem 1rem}
+
+  /* Sections */
+  .wrap{padding:4rem 1.4rem}
+  #hero{padding:7rem 1.4rem 4rem;min-height:auto}
+  .skills-head{padding:2.5rem 1.4rem 1rem}
+  .skill-block{padding:2rem 1.4rem 3.5rem}
+  .ovals-sec{padding:4rem 1.4rem;min-height:auto}
+  footer{padding:3.5rem 1.4rem 2.5rem}
+
+  /* Hero */
+  .hero-h1{font-size:clamp(2.4rem,10vw,5rem);line-height:.92;text-align:left}
+  .hero-bottom{flex-direction:column;gap:1.5rem;margin-top:2.5rem}
+  .hero-right{text-align:left}
+
+  /* About */
+  .about-grid{grid-template-columns:1fr;gap:2.5rem}
+  .meta-row{grid-template-columns:1fr 1fr;gap:.6rem}
+  .meta-row.single{grid-template-columns:1fr 1fr}
+
+  /* Skills — hide floating pills, show grid */
+  .pfloat{display:none}
+  .pill-mobile-grid{display:flex}
+  .skill-block{min-height:auto;padding-bottom:1.5rem}
+  .sbg{font-size:clamp(3rem,14vw,7rem);line-height:.9}
+
+  /* Projects */
+  .proj-grid{grid-template-columns:1fr;background:none;gap:.8rem}
+  .pcard{border:1px solid var(--border);border-radius:12px;min-height:auto}
+  .pcard[style*="grid-row:span 2"]{grid-row:span 1}
+
+  /* Films */
+  .films-top{grid-template-columns:1fr;gap:2rem;margin-bottom:2.5rem}
+  .films-grid{grid-template-columns:1fr;background:none;gap:.8rem}
+  .fcard{border:1px solid var(--border);border-radius:12px}
+
+  /* Education */
+  .edu-row{grid-template-columns:1fr;gap:.6rem;padding:2rem 0}
+  .edu-deg{font-size:1.3rem}
+  .edu-badge{margin-top:.5rem}
+
+  /* Contact */
+  .ovals-title{font-size:clamp(2rem,8vw,3.5rem);margin-bottom:2rem}
+  .ovals-grid{gap:.8rem}
+  .oval{width:145px;height:110px;padding:1rem}
+  .oval-name{font-size:.88rem}
+  .oval-handle{font-size:.6rem}
+
+  /* Footer */
+  .foot-bar{flex-direction:column;align-items:flex-start;gap:.8rem}
+  .foot-tag{font-size:.8rem}
+  .foot-grid{height:160px}
+}
+
+/* ── BREAKPOINT: Phone (480px) ── */
+@media(max-width:480px){
+  .nav{padding:.9rem 1rem}
+  .nav.bg{padding:.7rem 1rem}
+  .nav-mid a{font-size:.95rem}
+  .btn-red{font-size:.72rem;padding:.42rem .85rem}
+
+  .wrap{padding:3.5rem 1rem}
+  #hero{padding:6.5rem 1rem 3.5rem}
+  .skills-head{padding:2rem 1rem .8rem}
+  .skill-block{padding:1.5rem 1rem 1.5rem}
+  .ovals-sec{padding:3.5rem 1rem}
+  footer{padding:3rem 1rem 2rem}
+
+  /* Hero */
+  .hero-h1{font-size:clamp(2rem,11vw,3.8rem)}
+  .hero-desc{font-size:.88rem}
+  .hero-right p{font-size:.65rem}
+
+  /* About */
+  .meta-row{grid-template-columns:1fr;gap:.2rem;padding:.6rem 0}
+  .meta-row.single{grid-template-columns:1fr}
+  .mv{text-align:left}
+  .mk{font-size:.72rem}
+  .about-para{font-size:.92rem}
+
+  /* Projects */
+  .ptitle{font-size:1.35rem}
+  .pcard{padding:1.6rem}
+  .proj-head{flex-direction:column;align-items:flex-start;gap:.5rem;margin-bottom:2rem}
+
+  /* Films */
+  .films-big{font-size:clamp(2.5rem,12vw,4.5rem)}
+  .ftitle{font-size:1.25rem}
+  .fcard{padding:1.5rem}
+  .films-top{gap:1.5rem}
+  .role-badges{gap:.4rem}
+  .rbadge{font-size:.6rem;padding:.22rem .7rem}
+
+  /* Education */
+  .edu-deg{font-size:1.15rem}
+  .edu-detail{font-size:.78rem}
+  .sec-big{font-size:clamp(1.8rem,8vw,3rem)}
+
+  /* Contact */
+  .oval{width:130px;height:100px;padding:.8rem}
+  .oval-name{font-size:.82rem}
+  .ovals-grid{gap:.6rem}
+
+  /* Ticker */
+  .t-item{font-size:.85rem;padding:0 1.2rem}
+
+  /* Footer */
+  .foot-name{font-size:clamp(2.2rem,15vw,6rem)}
+}
+
+/* ── BREAKPOINT: Very small (360px) ── */
+@media(max-width:360px){
+  .hero-h1{font-size:clamp(1.8rem,12vw,3.2rem)}
+  .films-big{font-size:clamp(2rem,13vw,3.5rem)}
+  .oval{width:115px;height:90px}
+  .ovals-grid{gap:.4rem}
+  .foot-name{font-size:clamp(1.8rem,16vw,5rem)}
+}
+
+/* ── Touch devices: remove hover transitions ── */
+@media(hover:none){
+  .pcard:hover,.fcard:hover{background:var(--bg)}
+  .pcard.feat:hover{background:var(--bg2)}
+  .fcard:hover{background:var(--bg2)}
+  .oval:hover{transform:none}
 }
 </style>
 </head>
@@ -411,8 +604,22 @@ footer{padding:5rem 4rem 3rem;position:relative;overflow:hidden;background:var(-
   <div class="nav-right">
     <a href="https://www.linkedin.com/in/karthikunnikrishnandev/" target="_blank" class="nav-link">Let's Connect</a>
     <a href="#contact" class="btn-red">Say Hello</a>
+    <button class="ham" id="ham" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- Mobile drawer -->
+<div class="mob-menu" id="mobMenu">
+  <a href="#about"    onclick="closeMob()">About</a>
+  <a href="#skills"   onclick="closeMob()">Skills</a>
+  <a href="#projects" onclick="closeMob()">Projects</a>
+  <a href="#films"    onclick="closeMob()">Films</a>
+  <a href="#education" onclick="closeMob()">Education</a>
+  <a href="#contact"  onclick="closeMob()">Contact</a>
+  <a href="#contact"  onclick="closeMob()" class="mob-cta">Say Hello</a>
+</div>
 
 <!-- ══ HERO ══ -->
 <section id="hero">
@@ -520,6 +727,12 @@ footer{padding:5rem 4rem 3rem;position:relative;overflow:hidden;background:var(-
       <div class="pill" style="top:18%;left:66%">SQL</div>
       <div class="pill" style="top:62%;left:70%">Kotlin <span style="font-size:.63rem;opacity:.45">(learning)</span></div>
     </div>
+    <div class="pill-mobile-grid">
+      <div class="pill">Python</div><div class="pill">C / C++</div>
+      <div class="pill">JavaScript</div><div class="pill">R</div>
+      <div class="pill">HTML &amp; CSS</div><div class="pill">SQL</div>
+      <div class="pill">Kotlin</div>
+    </div>
   </div>
 
   <div class="skill-block" style="border-top:1px solid var(--border)">
@@ -532,6 +745,12 @@ footer{padding:5rem 4rem 3rem;position:relative;overflow:hidden;background:var(-
       <div class="pill" style="top:46%;left:46%">Data Analysis</div>
       <div class="pill" style="top:66%;left:58%">Visualisation</div>
       <div class="pill" style="top:20%;left:68%">Deep Learning</div>
+    </div>
+    <div class="pill-mobile-grid">
+      <div class="pill">Machine Learning</div><div class="pill">NLP</div>
+      <div class="pill">Pandas</div><div class="pill">NumPy</div>
+      <div class="pill">Data Analysis</div><div class="pill">Visualisation</div>
+      <div class="pill">Deep Learning</div>
     </div>
   </div>
 
@@ -546,6 +765,12 @@ footer{padding:5rem 4rem 3rem;position:relative;overflow:hidden;background:var(-
       <div class="pill" style="top:18%;left:56%">VS Code</div>
       <div class="pill" style="top:50%;left:64%">PyCharm</div>
       <div class="pill" style="top:68%;left:72%">RStudio</div>
+    </div>
+    <div class="pill-mobile-grid">
+      <div class="pill">Django</div><div class="pill">Node.js</div>
+      <div class="pill">PostgreSQL</div><div class="pill">MySQL</div>
+      <div class="pill">Git</div><div class="pill">VS Code</div>
+      <div class="pill">PyCharm</div><div class="pill">RStudio</div>
     </div>
   </div>
 </section>
@@ -794,6 +1019,20 @@ footer{padding:5rem 4rem 3rem;position:relative;overflow:hidden;background:var(-
 </footer>
 
 <script>
+/* ── HAMBURGER ── */
+const ham = document.getElementById('ham');
+const mobMenu = document.getElementById('mobMenu');
+function closeMob(){
+  ham.classList.remove('open');
+  mobMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+ham.addEventListener('click', () => {
+  const isOpen = mobMenu.classList.toggle('open');
+  ham.classList.toggle('open', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+});
+
 /* ── CURSOR ── */
 const cur = document.getElementById('cur');
 document.addEventListener('mousemove', e => {
