@@ -20,7 +20,7 @@
   <div class="nav-left">
     <a href="#about">About</a>
     <a href="#skills">Skills</a>
-    <a href="#projects">Projects (5)</a>
+    <a href="#projects">Projects</a>
     <a href="#films">Films</a>
   </div>
   <div class="nav-mid">
@@ -60,7 +60,7 @@
     </p>
     <div class="hero-right">
       <p><span class="dot"></span>Open for opportunities</p>
-      <p>IMSc CS · Data Science</p>
+      <p>karthikunnikrishnan2003@gmail.com</p>
       <p>Nirmala College, Muvattuppuzha</p>
     </div>
   </div>
@@ -448,9 +448,7 @@
   </div>
  
   <div class="foot-bar rr">
-    <div class="foot-copy">© 2025 Karthik Unnikrishnan · Kerala, India</div>
-    <div class="foot-tag">Data Science · Avittam Media Productions · Living Digital</div>
-    <a href="https://www.linkedin.com/in/karthikunnikrishnandev/" target="_blank" class="foot-cta">Let's Connect</a>
+    <div class="foot-copy">© 2026 Karthik Unnikrishnan</div>
   </div>
 </footer>
  
@@ -475,7 +473,7 @@ document.addEventListener('mousemove', e => {
   cur.style.left = e.clientX + 'px';
   cur.style.top  = e.clientY + 'px';
 });
-document.querySelectorAll('a, .pill, .oval').forEach(el => {
+document.querySelectorAll('a, .oval').forEach(el => {
   el.addEventListener('mouseenter', () => cur.classList.add('big'));
   el.addEventListener('mouseleave', () => cur.classList.remove('big'));
 });
@@ -519,15 +517,136 @@ window.addEventListener('scroll', () => {
   });
 }, { passive: true });
  
-/* ── PILLS FLOAT ── */
-document.querySelectorAll('.pill').forEach((p, i) => {
-  const d = (i * 0.38) % 2.8;
-  const dr = 2.8 + (i % 3) * 0.8;
-  p.style.animation = `pf ${dr}s ease-in-out ${d}s infinite`;
-});
-const sty = document.createElement('style');
-sty.textContent = '@keyframes pf{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}';
-document.head.appendChild(sty);
+/* ── PILLS: DRAG + FLOAT ── */
+(function(){
+  const styleEl = document.createElement('style');
+  styleEl.textContent = '@keyframes pf{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}';
+  document.head.appendChild(styleEl);
+
+  document.querySelectorAll('.pill').forEach((pill, i) => {
+    // Set initial float animation
+    const d  = (i * 0.38) % 2.8;
+    const dr = 2.8 + (i % 3) * 0.8;
+    pill.dataset.floatAnim = `pf ${dr}s ease-in-out ${d}s infinite`;
+    pill.style.animation   = pill.dataset.floatAnim;
+
+    let dragging = false;
+    let startX, startY, origLeft, origTop;
+    let velX = 0, velY = 0, lastX, lastY, lastT;
+    let rafId;
+
+    function getContainer(){ return pill.closest('.pfloat'); }
+
+    function startDrag(cx, cy){
+      dragging = true;
+      pill.classList.add('dragging');
+      pill.style.animation = 'none'; // pause float
+
+      const rect    = pill.getBoundingClientRect();
+      const pRect   = getContainer().getBoundingClientRect();
+      origLeft = rect.left - pRect.left;
+      origTop  = rect.top  - pRect.top;
+      startX = cx; startY = cy;
+      lastX = cx; lastY = cy; lastT = Date.now();
+      velX = 0; velY = 0;
+
+      pill.style.left = origLeft + 'px';
+      pill.style.top  = origTop  + 'px';
+      pill.style.transform = 'scale(1.1)';
+    }
+
+    function moveDrag(cx, cy){
+      if (!dragging) return;
+      const dx = cx - startX;
+      const dy = cy - startY;
+
+      // velocity tracking
+      const now = Date.now();
+      const dt  = Math.max(now - lastT, 1);
+      velX = (cx - lastX) / dt * 16;
+      velY = (cy - lastY) / dt * 16;
+      lastX = cx; lastY = cy; lastT = now;
+
+      // bounds
+      const cont  = getContainer();
+      const cRect = cont.getBoundingClientRect();
+      const pW    = pill.offsetWidth;
+      const pH    = pill.offsetHeight;
+      let newL = origLeft + dx;
+      let newT = origTop  + dy;
+      newL = Math.max(0, Math.min(cRect.width  - pW, newL));
+      newT = Math.max(0, Math.min(cRect.height - pH, newT));
+
+      pill.style.left = newL + 'px';
+      pill.style.top  = newT + 'px';
+    }
+
+    function endDrag(){
+      if (!dragging) return;
+      dragging = false;
+      pill.classList.remove('dragging');
+      pill.style.transform = '';
+
+      // momentum glide
+      cancelAnimationFrame(rafId);
+      const cont  = getContainer();
+      const friction = 0.88;
+
+      function glide(){
+        if (Math.abs(velX) < 0.1 && Math.abs(velY) < 0.1){
+          // resume float from current position
+          pill.style.animation = pill.dataset.floatAnim;
+          return;
+        }
+        velX *= friction;
+        velY *= friction;
+
+        const cRect = cont.getBoundingClientRect();
+        const pW    = pill.offsetWidth;
+        const pH    = pill.offsetHeight;
+        let newL = parseFloat(pill.style.left) + velX;
+        let newT = parseFloat(pill.style.top)  + velY;
+
+        // bounce off edges
+        if (newL <= 0)                { newL = 0;                    velX *= -0.5; }
+        if (newL >= cRect.width - pW) { newL = cRect.width - pW;    velX *= -0.5; }
+        if (newT <= 0)                { newT = 0;                    velY *= -0.5; }
+        if (newT >= cRect.height - pH){ newT = cRect.height - pH;   velY *= -0.5; }
+
+        pill.style.left = newL + 'px';
+        pill.style.top  = newT + 'px';
+        rafId = requestAnimationFrame(glide);
+      }
+      rafId = requestAnimationFrame(glide);
+    }
+
+    // ── MOUSE ──
+    pill.addEventListener('mousedown', e => {
+      e.preventDefault();
+      startDrag(e.clientX, e.clientY);
+
+      function onMove(e){ moveDrag(e.clientX, e.clientY); }
+      function onUp()   { endDrag(); document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup',   onUp);
+    });
+
+    // ── TOUCH ──
+    pill.addEventListener('touchstart', e => {
+      e.preventDefault();
+      const t = e.touches[0];
+      startDrag(t.clientX, t.clientY);
+    }, { passive: false });
+
+    pill.addEventListener('touchmove', e => {
+      e.preventDefault();
+      const t = e.touches[0];
+      moveDrag(t.clientX, t.clientY);
+    }, { passive: false });
+
+    pill.addEventListener('touchend', () => endDrag());
+  });
+})();
 </script>
 </body>
 </html>
