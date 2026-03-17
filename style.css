@@ -591,7 +591,10 @@ a {
 
 .proj-grid {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 1fr;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  grid-template-areas:
+    "p1 p1 p2"
+    "p3 p4 p5";
   gap: 1px;
   background: var(--border);
 }
@@ -599,7 +602,6 @@ a {
 .pcard {
   background: var(--bg);
   padding: 2.5rem;
-  min-height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -607,6 +609,30 @@ a {
   overflow: hidden;
   transition: background .3s;
   cursor: none;
+}
+
+/* Accent "stats" card style for card 003 */
+.pcard--accent {
+  background: var(--bg2);
+}
+
+.pcard--stat-wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: .5rem;
+}
+
+.pcard--stat {
+  font-family: var(--serif);
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-weight: 900;
+  font-style: italic;
+  color: var(--red);
+  white-space: nowrap;
+  opacity: .8;
 }
 
 .pcard::before {
@@ -1395,6 +1421,7 @@ footer {
   /* Projects */
   .proj-grid {
     grid-template-columns: 1fr;
+    grid-template-areas: none;
     background: none;
     gap: .8rem
   }
@@ -1402,11 +1429,7 @@ footer {
   .pcard {
     border: 1px solid var(--border);
     border-radius: 12px;
-    min-height: auto
-  }
-
-  .pcard[style*="grid-row:span 2"] {
-    grid-row: span 1
+    grid-area: unset !important;
   }
 
   /* Films */
