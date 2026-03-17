@@ -1299,8 +1299,7 @@ footer {
   }
 
   .btn-red {
-    font-size: .78rem;
-    padding: .48rem 1rem
+    display: none
   }
 
   /* Sections */
@@ -1645,7 +1644,8 @@ footer {
 
   /* Footer */
   .foot-name {
-    font-size: clamp(2.2rem, 15vw, 6rem)
+    font-size: clamp(1.4rem, 8.5vw, 5rem);
+    letter-spacing: -.03em
   }
 }
 
@@ -1669,7 +1669,8 @@ footer {
   }
 
   .foot-name {
-    font-size: clamp(1.8rem, 16vw, 5rem)
+    font-size: clamp(1.2rem, 8vw, 3.5rem);
+    letter-spacing: -.02em
   }
 }
 
