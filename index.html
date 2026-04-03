@@ -129,19 +129,20 @@
         </div>
         <div class="about-card-right">
           <p class="about-para">I'm <strong>Karthik Unnikrishnan</strong> — a developer and storyteller pursuing an
-            <strong>Integrated MSc in Computer Science with Data Science</strong> at Nirmala College, Muvattuppuzha.</p>
+            <strong>Integrated MSc in Computer Science with Data Science</strong> at Nirmala College, Muvattuppuzha.
+          </p>
           <p class="about-para">I write code that solves real problems — from predicting student dropout with machine
             learning to building full-stack web apps. Every project starts with a question and ends with something
             meaningful.</p>
           <p class="about-para">I'm deeply interested in the intersection of AI and real-world applications — exploring
             NLP, deep learning, and data-driven systems that create genuine impact.</p>
           <div class="about-meta">
-            <div class="am-row"><span class="am-k">Status</span><span class="am-v">Student — IMSc CS</span></div>
-            <div class="am-row"><span class="am-k">College</span><span class="am-v">Nirmala College,
+            <div class="am-row"><span class="am-k">Status</span><span class="am-v">Student </span></div>
+            <div class="am-row"><span class="am-k">College</span><span class="am-v">Nirmala College (Autonomous) ,
                 Muvattuppuzha</span></div>
             <div class="am-row"><span class="am-k">Specialisation</span><span class="am-v">Data Science</span></div>
             <div class="am-row"><span class="am-k">Location</span><span class="am-v">Kerala, India</span></div>
-            <div class="am-row"><span class="am-k">Available</span><span class="am-v am-available">Yes — Internships
+            <div class="am-row"><span class="am-k">Available</span><span class="am-v">Yes — Internships
                 &amp; Collabs</span></div>
           </div>
         </div>
@@ -213,31 +214,7 @@
         </div>
       </a>
 
-      <a href="https://github.com/KarthikUnnikrishnan" target="_blank" class="proj-card">
-        <div class="proj-card-img nlp-img">
-          <div class="proj-img-label">NLP Toolkit</div>
-        </div>
-        <div class="proj-info">
-          <div class="proj-meta"><span class="proj-num">005</span><span class="proj-stack">NLP · Python</span></div>
-          <div class="proj-name">NLP Toolkit</div>
-          <p class="proj-desc">NLP experiments — text classification, sentiment analysis and BERT exploration across
-            multiple datasets and evaluation frameworks.</p>
-          <span class="proj-arrow">↗</span>
-        </div>
-      </a>
 
-      <a href="#contact" class="proj-card open-card">
-        <div class="proj-card-img open-img">
-          <div class="open-plus">+</div>
-        </div>
-        <div class="proj-info">
-          <div class="proj-meta"><span class="proj-num">006</span><span class="proj-stack">Open to Collab</span></div>
-          <div class="proj-name open-name">Your next<br>big idea.</div>
-          <p class="proj-desc">Open to collaborations, freelance data projects and exciting internship opportunities.
-          </p>
-          <span class="proj-arrow" style="color:var(--accent)">↗</span>
-        </div>
-      </a>
 
     </div>
   </section>
@@ -314,23 +291,33 @@
       <div class="edu-item">
         <div class="edu-yr">2022 — Present</div>
         <div class="edu-body">
-          <div class="edu-title">Integrated MSc Computer Science</div>
-          <div class="edu-school">Nirmala College, Muvattuppuzha · Data Science</div>
+          <div class="edu-title">Integrated MSc Computer Science — Data Science</div>
+          <div class="edu-school">Nirmala College (Autonomous), Muvattupuzha</div>
           <p class="edu-desc">Five-year integrated programme covering CS fundamentals, data structures, algorithms,
             machine learning, statistical computing, NLP and full-stack development.</p>
         </div>
-        <span class="edu-badge">In Progress</span>
+        <span class="edu-badge active">In Progress</span>
       </div>
       <div class="edu-divider"></div>
       <div class="edu-item">
-        <div class="edu-yr">Ongoing</div>
+        <div class="edu-yr">2020 — 2022</div>
         <div class="edu-body">
-          <div class="edu-title">Self-Directed Learning</div>
-          <div class="edu-school">Online Platforms &amp; Personal Projects</div>
-          <p class="edu-desc">Continuously expanding skills in deep learning, Node.js, data visualisation, computer
-            vision and modern ML frameworks through projects and open-source work.</p>
+          <div class="edu-title">Plus Two Examination <span style="opacity:0.6;font-size:0.8em;font-weight:600">—
+              Computer Science</span></div>
+          <div class="edu-school">St.Peter's Higher Secondary School</div>
+          <p class="edu-desc">Completed Senior Secondary education with a core focus on the Computer Science stream.</p>
         </div>
-        <span class="edu-badge active">Active</span>
+        <span class="edu-badge">Completed</span>
+      </div>
+      <div class="edu-divider"></div>
+      <div class="edu-item">
+        <div class="edu-yr">2020</div>
+        <div class="edu-body">
+          <div class="edu-title">SSLC Examination</div>
+          <div class="edu-school">St.Mary's Higher Secondary School, Pallikkara</div>
+          <p class="edu-desc">Completed Secondary School Leaving Certificate.</p>
+        </div>
+        <span class="edu-badge">Completed</span>
       </div>
     </div>
   </section>
@@ -360,100 +347,7 @@
     </div>
   </footer>
 
-  <script>
-    /* ══ LOADER ══ */
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('done');
-        document.body.classList.add('loaded');
-        triggerHero();
-        initReveal();
-      }, 1000);
-    });
-
-    /* ══ HERO ENTRANCE ══ */
-    function triggerHero() {
-      const bg = document.querySelector('.hero-bg-name');
-      const tag = document.querySelector('.hero-tagline');
-      const scroll = document.querySelector('.hero-scroll');
-      if (bg) setTimeout(() => bg.classList.add('on'), 100);
-      if (tag) setTimeout(() => tag.classList.add('on'), 400);
-      if (scroll) setTimeout(() => scroll.classList.add('on'), 600);
-    }
-
-    /* ══ MENU ══ */
-    const menuBtn = document.getElementById('menuBtn');
-    const menuLabel = document.getElementById('menuLabel');
-    const menuDrop = document.getElementById('menuDropdown');
-    const menuDots = document.getElementById('menuDotsIcon');
-    const menuX = document.getElementById('menuXIcon');
-    let menuOpen = false;
-
-    function openMenu() {
-      menuOpen = true;
-      menuDrop.classList.add('open');
-      menuDrop.setAttribute('aria-hidden', 'false');
-      menuLabel.textContent = 'Close';
-      menuBtn.classList.add('menu-open');
-    }
-    function closeMenu() {
-      menuOpen = false;
-      menuDrop.classList.remove('open');
-      menuDrop.setAttribute('aria-hidden', 'true');
-      menuLabel.textContent = 'Menu';
-      menuBtn.classList.remove('menu-open');
-    }
-    menuBtn.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
-    document.querySelectorAll('.menu-item').forEach(item => {
-      item.addEventListener('click', closeMenu);
-    });
-    document.addEventListener('click', e => {
-      if (menuOpen && !document.getElementById('menuWrap').contains(e.target)) closeMenu();
-    });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && menuOpen) closeMenu(); });
-    /* ── Close menu automatically on scroll ── */
-    window.addEventListener('scroll', () => { if (menuOpen) closeMenu(); }, { passive: true });
-
-    /* ══ SCROLL REVEAL ══ */
-    function initReveal() {
-      const io = new IntersectionObserver(es => {
-        es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
-      }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
-      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-    }
-
-    /* ══ NAV SCROLL ══ */
-    const nav = document.getElementById('nav');
-    let pY = 0;
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      nav.classList.toggle('scrolled', y > 50);
-      nav.classList.toggle('nav-up', y > pY && y > 150);
-      pY = y;
-    }, { passive: true });
-
-    /* ══ HERO BG PARALLAX ══ */
-    const heroBg = document.querySelector('.hero-bg-name');
-    window.addEventListener('scroll', () => {
-      if (heroBg) heroBg.style.translate = `0 ${window.scrollY * 0.18}px`;
-    }, { passive: true });
-
-    /* ══ ROTATING TAGLINE WORD ══ */
-    const rotWord = document.getElementById('rotatingWord');
-    const rdWords = ["future.", "vision.", "success.", "stories.", "systems."];
-    let rwIdx = 0;
-    setInterval(() => {
-      rotWord.classList.add('out');
-      setTimeout(() => {
-        rwIdx = (rwIdx + 1) % rdWords.length;
-        rotWord.textContent = rdWords[rwIdx];
-        rotWord.classList.remove('out');
-        rotWord.classList.add('in');
-        void rotWord.offsetWidth; // force browser layout reflow instantly
-        rotWord.classList.remove('in');
-      }, 500);
-    }, 3000);
-  </script>
+  <script src="script.js"></script>
 
 </body>
 
