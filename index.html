@@ -63,6 +63,9 @@
 
   <!-- ══ HERO ══ -->
   <section id="hero" class="hero-section">
+    <!-- Ambient Blue Glow -->
+    <div class="hero-glow" aria-hidden="true"></div>
+
     <!-- Massive full name filling both lines -->
     <div class="hero-bg-name" aria-hidden="true">Karthik<br>Unnikrishnan</div>
 
@@ -363,8 +366,6 @@
       menuDrop.classList.add('open');
       menuDrop.setAttribute('aria-hidden', 'false');
       menuLabel.textContent = 'Close';
-      menuDots.style.display = 'none';
-      menuX.style.display = 'flex';
       menuBtn.classList.add('menu-open');
     }
     function closeMenu() {
@@ -372,8 +373,6 @@
       menuDrop.classList.remove('open');
       menuDrop.setAttribute('aria-hidden', 'true');
       menuLabel.textContent = 'Menu';
-      menuDots.style.display = 'flex';
-      menuX.style.display = 'none';
       menuBtn.classList.remove('menu-open');
     }
     menuBtn.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
