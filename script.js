@@ -1,11 +1,13 @@
 /* ══ LOADER ══ */
 window.addEventListener('load', () => {
+  // Trigger animations instantly behind the loader curtain
+  triggerHero();
+  initReveal();
+  
   setTimeout(() => {
     document.getElementById('loader').classList.add('done');
     document.body.classList.add('loaded');
-    triggerHero();
-    initReveal();
-  }, 1000);
+  }, 1000); // 1-second delay ensures elements are 100% finished animating when revealed
 });
 
 /* ══ HERO ENTRANCE ══ */
@@ -13,9 +15,15 @@ function triggerHero() {
   const bg = document.querySelector('.hero-bg-name');
   const tag = document.querySelector('.hero-tagline');
   const scroll = document.querySelector('.hero-scroll');
+  const particles = document.getElementById('tsparticles');
   if (bg) setTimeout(() => bg.classList.add('on'), 100);
   if (tag) setTimeout(() => tag.classList.add('on'), 400);
   if (scroll) setTimeout(() => scroll.classList.add('on'), 600);
+  if (particles) setTimeout(() => particles.classList.add('on'), 800);
+  
+  if (typeof tsParticles !== 'undefined') {
+    initParticles();
+  }
 }
 
 /* ══ MENU ══ */
@@ -91,3 +99,41 @@ setInterval(() => {
     rotWord.classList.remove('in');
   }, 500);
 }, 3000);
+
+/* ══ PARTICLES BACKGROUND ══ */
+function initParticles() {
+  tsParticles.load("tsparticles", {
+    fullScreen: { enable: false, zIndex: -1 },
+    fpsLimit: 60,
+    particles: {
+      number: { value: 50, density: { enable: true, value_area: 800 } },
+      color: { value: ["#2b6de8", "#222222", "#666666"] },
+      links: {
+        enable: true,
+        color: "#aaaaaa",
+        distance: 140,
+        opacity: 0.35,
+        width: 1
+      },
+      move: {
+        enable: true,
+        speed: 0.8,
+        direction: "none",
+        random: false,
+        straight: false,
+        outModes: "out"
+      },
+      size: { value: { min: 1, max: 3 } },
+      opacity: { value: 0.6 }
+    },
+    interactivity: {
+      events: {
+        onHover: { enable: true, mode: "grab" }
+      },
+      modes: {
+        grab: { distance: 180, links: { opacity: 0.7, color: "#2b6de8" } }
+      }
+    },
+    detectRetina: true
+  });
+}

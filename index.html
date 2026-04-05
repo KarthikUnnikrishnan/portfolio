@@ -31,13 +31,14 @@
     <!-- Right side: two separate pill buttons -->
     <div class="nav-right">
       <!-- Ghost soft-grey pill -->
-      <a href="https://www.linkedin.com/in/karthikunnikrishnandev/" target="_blank" class="nav-pill-light"
-        id="sayHelloBtn">
-        <span class="pill-label">Say Hello</span>
+      <a href="assets/Karthik_CV.pdf" download="Karthik_CV.pdf" class="nav-pill-light" id="cvBtn">
+        <span class="pill-label">Download CV</span>
         <span class="pill-icon-circle">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
         </span>
       </a>
@@ -70,8 +71,8 @@
 
   <!-- ══ HERO ══ -->
   <section id="hero" class="hero-section">
-    <!-- Ambient Blue Glow -->
-    <div class="hero-glow" aria-hidden="true"></div>
+    <!-- Interactive Data Science Particles -->
+    <div id="tsparticles" class="hero-particles" aria-hidden="true"></div>
 
     <!-- Massive full name filling both lines -->
     <div class="hero-bg-name" aria-hidden="true">Karthik<br>Unnikrishnan</div>
@@ -79,6 +80,7 @@
     <!-- Bottom-left: tagline -->
     <div class="hero-tagline">
       <p>Your data builds<br>our <span id="rotatingWord" class="rotating-word">future.</span></p>
+      <div class="hero-subtext">A passionate Data Science student building intelligent algorithms, clean codebases, and digital experiences.</div>
     </div>
 
     <!-- Extreme bottom-left: scroll indicator -->
@@ -347,6 +349,7 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.12.0/tsparticles.slim.bundle.min.js"></script>
   <script src="script.js"></script>
 
 </body>
