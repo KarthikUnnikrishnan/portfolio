@@ -1166,14 +1166,16 @@ button {
   }
 
   .hero-scroll {
-    left: 18px;
-    bottom: 22px;
+    display: none;
   }
 
   .hero-bg-name {
-    font-size: 28vw;
-    bottom: -2%;
-    line-height: 0.85;
+    font-size: 11vw;
+    bottom: 5%;
+    line-height: 0.8;
+    letter-spacing: -0.07em;
+    padding-right: 18px;
+    text-align: right;
   }
 
 
