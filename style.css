@@ -1,22 +1,40 @@
 :root {
-  /* SOHub exact colours */
+  /* design tokens — colour system */
   --bg: #f0f6f8;
-  /* light blue-grey main bg */
   --ink: #090c10;
-  /* near-black text / hero bg / dark pill */
   --pill-light: #d9e0e3;
-  /* "Say Hello" pill bg + menu card bg */
   --muted: #797f82;
-  /* scroll text, secondary labels */
   --border: rgba(12, 16, 22, 0.09);
   --accent: #2B6DE8;
-
+  --card-bg: #ffffff;
   --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out: cubic-bezier(0.0, 0, 0.2, 1);
-
-  /* dark section */
   --bg-dark: #111214;
+}
+
+[data-theme="dark"] {
+  --bg: #0e1117;
+  --ink: #f0f6f8;
+  --pill-light: #1e2330;
+  --muted: #7a8694;
+  --border: rgba(255, 255, 255, 0.08);
+  --card-bg: #161b27;
+  --bg-dark: #090c10;
+}
+
+/* Smooth transition for all theme-sensitive properties */
+body,
+.nav,
+.about-card,
+.proj-card,
+.edu-list,
+.menu-dropdown,
+.ticker-wrap {
+  transition:
+    background 0.4s var(--ease),
+    color 0.4s var(--ease),
+    border-color 0.4s var(--ease);
 }
 
 /* ── RESET ───────────────────────────────────────────────────────── */
@@ -91,8 +109,10 @@ button {
   z-index: 9999;
   background: var(--ink);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 28px;
   transition: opacity 0.55s var(--ease), visibility 0.55s;
 }
 
@@ -110,6 +130,37 @@ button {
   animation: loaderPop 0.8s var(--ease-out) forwards;
 }
 
+/* Loading bar track */
+.loader-bar-wrap {
+  width: clamp(120px, 30vw, 220px);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+  opacity: 0;
+  animation: barFadeIn 0.3s var(--ease) 0.3s forwards;
+}
+
+/* Loading bar fill */
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  border-radius: 999px;
+  animation: barLoad 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.35s forwards;
+}
+
+@keyframes barFadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes barLoad {
+  0%   { width: 0%; }
+  60%  { width: 75%; }
+  85%  { width: 92%; }
+  100% { width: 100%; }
+}
+
 @keyframes loaderPop {
   from {
     opacity: 0;
@@ -122,8 +173,120 @@ button {
   }
 }
 
-/* ── CURSOR: default browser cursor ─────────────────────────────── */
-/* Custom cursor removed — using native OS cursor */
+/* ══ SCROLL PROGRESS BAR ════════════════════════════════════════════ */
+#scrollProgress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--accent);
+  z-index: 9999;
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
+/* ══ CUSTOM CURSOR ══════════════════════════════════════════════════ */
+/* Hide default cursor on desktop only */
+@media (pointer: fine) {
+  html, body, a, button { cursor: none !important; }
+}
+
+#cursorDot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s ease, opacity 0.3s ease, width 0.25s var(--ease), height 0.25s var(--ease);
+  will-change: left, top;
+}
+
+#cursorRing {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+  transition: width 0.35s var(--ease), height 0.35s var(--ease), opacity 0.3s ease, border-color 0.3s;
+  will-change: left, top;
+}
+
+/* Cursor expand on hoverable elements */
+body.cursor-hover #cursorRing {
+  width: 56px;
+  height: 56px;
+  opacity: 0.25;
+}
+
+body.cursor-hover #cursorDot {
+  width: 10px;
+  height: 10px;
+}
+
+/* Cursor shrink on click */
+body.cursor-click #cursorDot {
+  transform: translate(-50%, -50%) scale(0.5);
+}
+
+/* ══ VANILLA-TILT 3D card glow ══════════════════════════════════════ */
+.proj-card[data-tilt] {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.proj-card .tilt-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%),
+    rgba(43, 109, 232, 0.12) 0%,
+    transparent 65%);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.proj-card:hover .tilt-glow {
+  opacity: 1;
+}
+
+/* ══ SKILL TAG RIPPLE ═══════════════════════════════════════════════ */
+.stag {
+  position: relative;
+  overflow: hidden;
+}
+
+.stag-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0);
+  animation: rippleOut 0.55s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes rippleOut {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ══ MAGNETIC button inner ══════════════════════════════════════════ */
+.mag-inner {
+  display: contents;
+  transition: transform 0.3s var(--ease);
+  will-change: transform;
+}
 
 /* ── NAV ─────────────────────────────────────────────────────────── */
 .nav {
@@ -140,17 +303,21 @@ button {
 }
 
 .nav.scrolled {
-  background: rgba(240, 246, 248, 0.82);
+  background: rgba(240, 246, 248, 0.85);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
+}
+
+[data-theme="dark"] .nav.scrolled {
+  background: rgba(14, 17, 23, 0.88);
 }
 
 .nav.nav-up {
   transform: translateY(-100%);
 }
 
-/* Logo — match SOHub 'sohub': same size, weight, round feel */
+/* Logo — lowercase wordmark, small, tight spacing */
 .nav-logo {
   font-size: 1.35rem;
   font-weight: 500;
@@ -171,7 +338,7 @@ button {
   gap: 10px;
 }
 
-/* ─── PILL SHARED — exact SOHub match (~44px total height) ─── */
+/* ─── PILL SHARED — ~44px tall, pill shape, smooth transitions ─── */
 .nav-pill-light,
 .nav-pill-dark {
   display: flex;
@@ -199,15 +366,68 @@ button {
   /* Relies on parent transition for a super smooth, rubber-band feel */
 }
 
-/* Light pill — "Say Hello" */
+/* ─── THEME TOGGLE BUTTON ─── */
+.theme-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: var(--pill-light);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.4s var(--ease), transform 0.3s var(--ease), color 0.4s var(--ease);
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+.theme-toggle:active {
+  transform: scale(0.92);
+}
+
+/* Icon crossfade */
+.theme-toggle .icon-moon,
+.theme-toggle .icon-sun {
+  position: absolute;
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.theme-icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Light mode: show moon, hide sun */
+.icon-sun  { opacity: 0; transform: rotate(90deg) scale(0.6); }
+.icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+
+/* Dark mode: show sun, hide moon */
+[data-theme="dark"] .icon-sun  { opacity: 1; transform: rotate(0deg) scale(1); }
+[data-theme="dark"] .icon-moon { opacity: 0; transform: rotate(-90deg) scale(0.6); }
+
+
 .nav-pill-light {
   background: var(--pill-light);
   color: var(--ink);
 }
 
-/* Dark pill — "Menu" */
+/* Dark pill — "Menu" — always uses absolute dark color */
 .nav-pill-dark {
-  background: var(--ink);
+  background: #0c1016;
+  color: #fff;
+}
+
+[data-theme="dark"] .nav-pill-dark {
+  background: #1e2330;
   color: #fff;
 }
 
@@ -231,6 +451,11 @@ button {
   transition: transform 0.5s var(--ease), background 0.4s var(--ease);
 }
 
+[data-theme="dark"] .pill-icon-circle {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
 .nav-pill-light:hover .pill-icon-circle,
 .nav-pill-dark:hover .pill-icon-circle {
   transform: scale(1.1);
@@ -246,7 +471,7 @@ button {
   color: #fff;
 }
 
-/* Dots icon — 3 horizontal dots like SOHub "···" */
+/* Dots icon — 3 tiny horizontal dots (···) */
 .menu-dots-icon {
   display: flex;
   flex-direction: row;
@@ -317,7 +542,7 @@ button {
   pointer-events: auto;
 }
 
-/* Menu items - large bold + SOHub-style arrow hover */
+/* Menu items — large bold links with arrow on hover */
 .menu-item {
   display: flex;
   align-items: center;
@@ -392,7 +617,7 @@ button {
   opacity: 0.5;
 }
 
-/* Massive dark background name — RIGHT aligned like SOHub */
+/* Massive background name — right-aligned watermark text */
 .hero-bg-name {
   position: absolute;
   bottom: -2%;
@@ -580,7 +805,7 @@ button {
 
 /* ── ABOUT ───────────────────────────────────────────────────────── */
 .about-card {
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 24px;
   overflow: hidden;
@@ -632,7 +857,7 @@ button {
 .about-para {
   font-size: 0.95rem;
   line-height: 1.78;
-  color: #444;
+  color: var(--muted);
 }
 
 .about-meta {
@@ -674,15 +899,14 @@ button {
 }
 
 .proj-card {
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
-  /* hover: subtle lift only, no 3D tilt */
-  transition: box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+  transition: box-shadow 0.3s var(--ease), transform 0.3s var(--ease), background 0.4s var(--ease);
 }
 
 .proj-card:hover {
@@ -701,10 +925,30 @@ button {
   overflow: hidden;
 }
 
-/* Subtle zoom on hover — not 3D */
-.proj-card:hover .proj-card-img>* {
-  transform: scale(1.02);
+/* Screenshot fills the container perfectly */
+.proj-card-img img.proj-screenshot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
   transition: transform 0.5s var(--ease);
+  z-index: 0;
+}
+
+.proj-card:hover .proj-card-img img.proj-screenshot {
+  transform: scale(1.04);
+}
+
+/* Dark gradient scrim over the screenshot */
+.proj-card-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 55%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
 }
 
 .proj-img-label {
@@ -717,52 +961,12 @@ button {
   position: relative;
 }
 
-/* gradient fills */
-.genora-img {
-  background: linear-gradient(135deg, #1a1a2e, #0f3460, #533483);
-}
-
-.brightfuture-img {
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-}
-
-.querybridge-img {
-  background: linear-gradient(135deg, #1a1a1a, #1a3a1a, #2d4a2d);
-}
-
-.bert-img {
-  background: linear-gradient(135deg, #2d1b69, #11998e);
-}
-
-.nlp-img {
-  background: linear-gradient(135deg, #23074d, #cc5333);
-}
-
-.open-img {
-  background: #eef1f4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.open-plus {
-  font-size: 3rem;
-  font-weight: 300;
-  color: var(--muted);
-  line-height: 1;
-}
-
-/* gradient overlay */
-.genora-img::after,
-.brightfuture-img::after,
-.querybridge-img::after,
-.bert-img::after,
-.nlp-img::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, transparent 55%);
-}
+/* project screenshot — fallback bg color only */
+.genora-img      { background: #0f3460; }
+.brightfuture-img { background: #203a43; }
+.querybridge-img  { background: #1a3a1a; }
+.bert-img         { background: #2d1b69; }
+.nlp-img          { background: #23074d; }
 
 .proj-info {
   padding: 22px 24px;
@@ -804,7 +1008,7 @@ button {
 .proj-desc {
   font-size: 0.84rem;
   line-height: 1.65;
-  color: #555;
+  color: var(--muted);
 }
 
 .open-name {
@@ -838,7 +1042,7 @@ button {
 }
 
 .scard {
-  background: var(--ink);
+  background: #111418;
   border-radius: 22px;
   color: #fff;
   position: relative;
@@ -846,11 +1050,11 @@ button {
 }
 
 .scard:nth-child(2) {
-  background: #181b20;
+  background: #111418;
 }
 
 .scard:nth-child(3) {
-  background: #1d2025;
+  background: #111418;
 }
 
 .scard-body {
@@ -920,7 +1124,7 @@ button {
 
 /* ── EDUCATION ───────────────────────────────────────────────────── */
 .edu-list {
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 22px;
   overflow: hidden;
@@ -964,7 +1168,7 @@ button {
 .edu-desc {
   font-size: 0.875rem;
   line-height: 1.72;
-  color: #555;
+  color: var(--muted);
 }
 
 .edu-badge {
@@ -1042,14 +1246,20 @@ button {
 
 .clink.primary {
   background: #fff;
-  color: var(--ink);
+  color: #0c1016;
   border-color: #fff;
 }
 
-.clink.primary:hover {
-  background: rgba(255, 255, 255, 0.88);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+[data-theme="dark"] .clink.primary {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="dark"] .clink.primary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+  box-shadow: none;
 }
 
 /* ── FOOTER ──────────────────────────────────────────────────────── */

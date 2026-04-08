@@ -4,23 +4,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Karthik Unnikrishnan — Data Science & Software</title>
+
+  <!-- ══ PRIMARY META ══════════════════════════════════════════════ -->
+  <title>Karthik Unnikrishnan | Data Science & ML Portfolio</title>
   <meta name="description"
-    content="Karthik Unnikrishnan — Data Science student from Kerala, building intelligent software, exploring machine learning and crafting meaningful digital experiences.">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/karthik favicon.png">
+    content="Karthik Unnikrishnan — Data Science student from Kerala building ML pipelines, NLP systems, and full-stack applications. Explore projects, skills, and open to collaborations." />
+  <meta name="keywords"
+    content="Karthik Unnikrishnan, Data Science, Machine Learning, NLP, Python, Portfolio, Kerala, Full Stack Developer, Deep Learning, AI, React, Django, FastAPI" />
+  <meta name="author" content="Karthik Unnikrishnan" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#090c10" />
+  <link rel="canonical" href="https://karthikunnikrishnan.dev/" />
+
+  <!-- ══ OPEN GRAPH (Facebook / LinkedIn) ════════════════════════ -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://karthikunnikrishnan.dev/" />
+  <meta property="og:title"       content="Karthik Unnikrishnan | Data Science & ML Portfolio" />
+  <meta property="og:description" content="Data Science student from Kerala building ML pipelines, NLP systems, and full-stack apps. Check out my projects and get in touch." />
+  <meta property="og:image"       content="https://karthikunnikrishnan.dev/assets/og-preview.png" />
+  <meta property="og:locale"      content="en_IN" />
+  <meta property="og:site_name"   content="Karthik Unnikrishnan" />
+
+  <!-- ══ TWITTER CARD ════════════════════════════════════════════ -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@Karthik_Film" />
+  <meta name="twitter:creator"     content="@Karthik_Film" />
+  <meta name="twitter:title"       content="Karthik Unnikrishnan | Data Science & ML Portfolio" />
+  <meta name="twitter:description" content="Data Science student from Kerala building ML pipelines, NLP systems, and full-stack apps." />
+  <meta name="twitter:image"       content="https://karthikunnikrishnan.dev/assets/og-preview.png" />
+
+  <!-- ══ FAVICON ═════════════════════════════════════════════════ -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/karthik favicon.png" />
+
+  <!-- ══ STYLES & FONTS ══════════════════════════════════════════ -->
   <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700;1,800&display=swap"
     rel="stylesheet" />
+
+  <!-- ══ STRUCTURED DATA (JSON-LD) ═══════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://karthikunnikrishnan.dev/#person",
+        "name": "Karthik Unnikrishnan",
+        "url": "https://karthikunnikrishnan.dev/",
+        "image": "https://karthikunnikrishnan.dev/assets/og-preview.png",
+        "jobTitle": "Data Science Student & Developer",
+        "description": "Data Science student from Kerala, India, building ML pipelines, NLP systems, and full-stack applications.",
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Nirmala College (Autonomous), Muvattupuzha"
+        },
+        "knowsAbout": [
+          "Data Science", "Machine Learning", "NLP", "Deep Learning",
+          "Python", "React", "Django", "FastAPI", "PostgreSQL"
+        ],
+        "sameAs": [
+          "https://www.linkedin.com/in/karthikunnikrishnandev/",
+          "https://github.com/KarthikUnnikrishnan",
+          "https://x.com/Karthik_Film",
+          "https://www.instagram.com/karthik_unnikrishnan/"
+        ],
+        "email": "karthikunnikrishnandev@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressRegion": "Kerala",
+          "addressCountry": "IN"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://karthikunnikrishnan.dev/#website",
+        "url": "https://karthikunnikrishnan.dev/",
+        "name": "Karthik Unnikrishnan — Portfolio",
+        "description": "Personal portfolio of Karthik Unnikrishnan, Data Science student and developer.",
+        "publisher": {
+          "@id": "https://karthikunnikrishnan.dev/#person"
+        },
+        "inLanguage": "en-IN"
+      }
+    ]
+  }
+  </script>
 </head>
 
+
 <body>
+
+  <!-- ══ SCROLL PROGRESS BAR ══ -->
+  <div id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- ══ CUSTOM CURSOR ══ -->
+  <div id="cursorDot" aria-hidden="true"></div>
+  <div id="cursorRing" aria-hidden="true"></div>
 
   <!-- ══ PAGE LOADER ══ -->
   <div id="loader">
     <div class="loader-text">karthik</div>
+    <div class="loader-bar-wrap">
+      <div class="loader-bar-fill"></div>
+    </div>
   </div>
 
   <!-- ══ NAV ══ -->
@@ -42,6 +131,28 @@
           </svg>
         </span>
       </a>
+
+      <!-- Dark / Light mode toggle -->
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <span class="theme-icon" id="themeIcon">
+          <!-- Moon (shown in light mode) -->
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <!-- Sun (shown in dark mode) -->
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </span>
+      </button>
 
       <!-- Dark pill: MENU with dots icon, changes to CLOSE -->
       <div class="nav-menu-wrap" id="menuWrap">
@@ -80,38 +191,14 @@
     <!-- Bottom-left: tagline -->
     <div class="hero-tagline">
       <p>Your data builds<br>our <span id="rotatingWord" class="rotating-word">future.</span></p>
-      <div class="hero-subtext">A passionate Data Science student building intelligent algorithms, clean codebases, and digital experiences.</div>
+      <div class="hero-subtext">A passionate Data Science student building intelligent algorithms, clean codebases, and
+        digital experiences.</div>
     </div>
 
     <!-- Extreme bottom-left: scroll indicator -->
     <div class="hero-scroll">Scroll</div>
   </section>
 
-  <!-- ══ TICKER ══ -->
-  <div class="ticker-wrap" aria-hidden="true">
-    <div class="ticker-track">
-      <span class="t-i">Python<span class="t-sep">✦</span></span>
-      <span class="t-i">Machine Learning<span class="t-sep">✦</span></span>
-      <span class="t-i">React<span class="t-sep">✦</span></span>
-      <span class="t-i">Data Science<span class="t-sep">✦</span></span>
-      <span class="t-i">Django<span class="t-sep">✦</span></span>
-      <span class="t-i">FastAPI<span class="t-sep">✦</span></span>
-      <span class="t-i">NLP<span class="t-sep">✦</span></span>
-      <span class="t-i">PostgreSQL<span class="t-sep">✦</span></span>
-      <span class="t-i">Deep Learning<span class="t-sep">✦</span></span>
-      <span class="t-i">Node.js<span class="t-sep">✦</span></span>
-      <span class="t-i">Python<span class="t-sep">✦</span></span>
-      <span class="t-i">Machine Learning<span class="t-sep">✦</span></span>
-      <span class="t-i">React<span class="t-sep">✦</span></span>
-      <span class="t-i">Data Science<span class="t-sep">✦</span></span>
-      <span class="t-i">Django<span class="t-sep">✦</span></span>
-      <span class="t-i">FastAPI<span class="t-sep">✦</span></span>
-      <span class="t-i">NLP<span class="t-sep">✦</span></span>
-      <span class="t-i">PostgreSQL<span class="t-sep">✦</span></span>
-      <span class="t-i">Deep Learning<span class="t-sep">✦</span></span>
-      <span class="t-i">Node.js<span class="t-sep">✦</span></span>
-    </div>
-  </div>
 
   <!-- ══ ABOUT ══ -->
   <section id="about" class="section">
@@ -163,6 +250,7 @@
 
       <a href="https://github.com/karthikUnnikrishnan/Genora/" target="_blank" class="proj-card">
         <div class="proj-card-img genora-img">
+          <img src="assets/Genora_Home.png" alt="Genora screenshot" class="proj-screenshot">
           <div class="proj-img-label">Genora</div>
         </div>
         <div class="proj-info">
@@ -177,6 +265,7 @@
 
       <a href="https://github.com/KarthikUnnikrishnan/brightfuture" target="_blank" class="proj-card">
         <div class="proj-card-img brightfuture-img">
+          <img src="assets/BrightFuture_Home.png" alt="BrightFuture screenshot" class="proj-screenshot">
           <div class="proj-img-label">BrightFuture</div>
         </div>
         <div class="proj-info">
@@ -191,6 +280,7 @@
 
       <a href="https://github.com/KarthikUnnikrishnan/QueryBridge" target="_blank" class="proj-card">
         <div class="proj-card-img querybridge-img">
+          <img src="assets/QueryBridge_Home.png" alt="QueryBridge screenshot" class="proj-screenshot">
           <div class="proj-img-label">QueryBridge</div>
         </div>
         <div class="proj-info">
@@ -205,6 +295,7 @@
 
       <a href="https://github.com/KarthikUnnikrishnan/Deep-Learning-Projects" target="_blank" class="proj-card">
         <div class="proj-card-img bert-img">
+          <img src="assets/BERT_Home.png" alt="Semantic Detection screenshot" class="proj-screenshot">
           <div class="proj-img-label">Semantic Detection</div>
         </div>
         <div class="proj-info">
@@ -350,6 +441,7 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.12.0/tsparticles.slim.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
   <script src="script.js"></script>
 
 </body>

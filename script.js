@@ -1,3 +1,20 @@
+/* ══ THEME ══ */
+const html = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme = localStorage.getItem('theme') || 'light';
+if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+
+themeToggle.addEventListener('click', () => {
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  if (isDark) {
+    html.removeAttribute('data-theme');
+    localStorage.setItem('theme', 'light');
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+  }
+});
+
 /* ══ LOADER ══ */
 window.addEventListener('load', () => {
   // Trigger animations instantly behind the loader curtain
@@ -137,3 +154,118 @@ function initParticles() {
     detectRetina: true
   });
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   PREMIUM INTERACTIONS
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 1. CUSTOM SPRING CURSOR ──────────────────────────────────────── */
+(function initCursor() {
+  // Only on devices with a fine pointer (mouse/trackpad)
+  if (!matchMedia('(pointer: fine)').matches) return;
+
+  const dot  = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  if (!dot || !ring) return;
+
+  let mx = -100, my = -100; // mouse  position
+  let rx = -100, ry = -100; // ring   position (lagged)
+
+  // Move dot instantly, ring with spring lag
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top  = my + 'px';
+  });
+
+  // Spring-physics ring follows with lag
+  (function rafLoop() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(rafLoop);
+  })();
+
+  // Expand ring on interactive elements
+  const hoverEls = 'a, button, .proj-card, .stag, .scard, .menu-item, .nav-logo';
+  document.querySelectorAll(hoverEls).forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+
+  // Shrink dot on click
+  document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
+  document.addEventListener('mouseup',   () => document.body.classList.remove('cursor-click'));
+
+  // Hide when leaving window
+  document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+  document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '0.5'; });
+})();
+
+
+/* ── 2. SCROLL PROGRESS BAR ───────────────────────────────────────── */
+(function initScrollProgress() {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total    = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (scrolled / total * 100).toFixed(2) + '%';
+  }, { passive: true });
+})();
+
+
+/* ── 3. VANILLA-TILT 3D on project cards ─────────────────────────── */
+window.addEventListener('load', () => {
+  if (typeof VanillaTilt === 'undefined') return;
+
+  const cards = document.querySelectorAll('.proj-card');
+  cards.forEach(card => {
+    // Inject glow layer inside each card
+    const glow = document.createElement('div');
+    glow.className = 'tilt-glow';
+    card.appendChild(glow);
+
+    // Track mouse inside card to update glow position
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const px = ((e.clientX - r.left) / r.width  * 100).toFixed(1) + '%';
+      const py = ((e.clientY - r.top)  / r.height * 100).toFixed(1) + '%';
+      glow.style.setProperty('--x', px);
+      glow.style.setProperty('--y', py);
+    });
+  });
+
+  VanillaTilt.init(document.querySelectorAll('.proj-card'), {
+    max:           8,
+    speed:         600,
+    glare:         false,
+    scale:         1.02,
+    perspective:   1200,
+    transition:    true,
+    gyroscope:     false,
+  });
+});
+
+
+/* ── 4 (removed: Magnetic Buttons) ─────────────────────────────── */
+
+
+/* ── 5. SKILL TAG RIPPLE ──────────────────────────────────────────── */
+(function initRipple() {
+  document.querySelectorAll('.stag').forEach(tag => {
+    tag.addEventListener('click', e => {
+      const r    = tag.getBoundingClientRect();
+      const size = Math.max(r.width, r.height);
+      const x    = e.clientX - r.left - size / 2;
+      const y    = e.clientY - r.top  - size / 2;
+      const rip  = document.createElement('span');
+      rip.className = 'stag-ripple';
+      rip.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
+      tag.appendChild(rip);
+      rip.addEventListener('animationend', () => rip.remove());
+    });
+  });
+})();
