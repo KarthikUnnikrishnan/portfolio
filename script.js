@@ -269,3 +269,17 @@ window.addEventListener('load', () => {
     });
   });
 })();
+
+
+/* ── 6. SCROLL TO TOP BUTTON ──────────────────────────────────────── */
+(function initScrollTop() {
+  const scrollBtn = document.getElementById('scrollTopBtn');
+  if (!scrollBtn) return;
+  
+  scrollBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+})();
