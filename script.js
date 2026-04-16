@@ -291,6 +291,9 @@ window.addEventListener('load', () => {
    DATA PULSE WAVEFORM — Enhanced Cursor Interactions
    ══════════════════════════════════════════════════════════════════ */
 (function initWaveform() {
+  // Skip entirely on touch / mobile — no mouse, no RAF overhead
+  if (!matchMedia('(pointer: fine)').matches) return;
+
   const canvas  = document.getElementById('waveformCanvas');
   if (!canvas) return;
 
@@ -500,6 +503,7 @@ window.addEventListener('load', () => {
     if (wave.width > 1) {
       const dotCount = Math.floor(8 + amplitudeCurrent * 6);
       const step     = Math.floor(pts.length / dotCount);
+      if (step < 1) { ctx.restore(); return; } // safety: avoid step=0 infinite loop
       for (let i = 0; i < pts.length; i += step) {
         const pt  = pts[i];
         const opc = (wave.opacity * 0.85 * amplitudeCurrent).toFixed(3);
@@ -519,6 +523,12 @@ window.addEventListener('load', () => {
 
     const cssW = canvas.offsetWidth;
     const cssH = canvas.offsetHeight;
+
+    // Guard: canvas is hidden (e.g. display:none on resize) — skip draw, keep loop alive
+    if (cssW === 0 || cssH === 0) {
+      rafId = requestAnimationFrame(animate);
+      return;
+    }
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, W, H);
