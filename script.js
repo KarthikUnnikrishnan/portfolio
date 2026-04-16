@@ -1,7 +1,7 @@
 /* ══ THEME ══ */
 const html = document.documentElement;
 const themeToggle = document.getElementById('themeToggle');
-const savedTheme = localStorage.getItem('theme') || 'light';
+const savedTheme = localStorage.getItem('theme') || 'dark';
 if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
 
 themeToggle.addEventListener('click', () => {
@@ -284,4 +284,284 @@ window.addEventListener('load', () => {
       behavior: 'smooth'
     });
   });
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════
+   DATA PULSE WAVEFORM — Enhanced Cursor Interactions
+   ══════════════════════════════════════════════════════════════════ */
+(function initWaveform() {
+  const canvas  = document.getElementById('waveformCanvas');
+  if (!canvas) return;
+
+  const ctx     = canvas.getContext('2d');
+  const heroEl  = document.getElementById('hero');
+
+  /* ── Wave layer definitions ──────────────────────────────────── */
+  const waves = [
+    { amplitude: 55, frequency: 0.011, speed: 0.006, baseSpeed: 0.006, phase: 0,   opacity: 0.55, width: 1.5 },
+    { amplitude: 32, frequency: 0.017, speed: 0.010, baseSpeed: 0.010, phase: 2.1, opacity: 0.30, width: 1.0 },
+    { amplitude: 18, frequency: 0.026, speed: 0.004, baseSpeed: 0.004, phase: 4.4, opacity: 0.15, width: 0.7 },
+  ];
+
+  /* ── State ───────────────────────────────────────────────────── */
+  let W = 0, H = 0;
+
+  // Mouse position (canvas-relative)
+  let mouseX = -999, mouseY = -999;
+  let prevMouseX = -999, prevMouseY = -999;
+
+  // Lerped values — everything is smoothed to avoid jerks
+  let amplitudeCurrent  = 1.0;   // lerped amplitude multiplier
+  let amplitudeTarget   = 1.0;
+  let centerYCurrent    = 0.5;   // lerped vertical center (0–1 fraction of canvas H)
+  let centerYTarget     = 0.5;
+  let speedMult         = 1.0;   // lerped speed multiplier from velocity
+  let speedMultTarget   = 1.0;
+  let rippleStrength    = 0.0;   // lerped ripple intensity
+  let rippleTarget      = 0.0;
+  let glowAlpha         = 0.0;   // lerped cursor halo opacity
+
+  // Floating particles array
+  const particles = [];
+  const MAX_PARTICLES = 40;
+
+  let rafId = null;
+  let isVisible = false;
+  let inCanvas = false; // cursor is over the canvas region
+
+  /* ── Resize ──────────────────────────────────────────────────── */
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    W = canvas.width  = rect.width  * window.devicePixelRatio;
+    H = canvas.height = rect.height * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  }
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resize, 150);
+  }, { passive: true });
+
+  /* ── Mouse tracking ──────────────────────────────────────────── */
+  heroEl.addEventListener('mousemove', e => {
+    const r   = canvas.getBoundingClientRect();
+    prevMouseX = mouseX;
+    prevMouseY = mouseY;
+
+    // Convert to canvas-local coords
+    const cx = e.clientX - r.left;
+    const cy = e.clientY - r.top;
+    mouseX = cx;
+    mouseY = cy;
+
+    inCanvas = cx >= 0 && cx <= r.width && cy >= 0 && cy <= r.height;
+
+    if (inCanvas) {
+      // 1. Amplitude boost — closer to left edge of canvas → bigger boost
+      const proximity   = Math.max(0, 1 - cx / (r.width * 1.4));
+      amplitudeTarget   = 1.0 + proximity * 0.9;
+
+      // 2. Vertical centerline — cursor Y shifts wave center (±15%)
+      centerYTarget = 0.5 + ((cy / r.height) - 0.5) * 0.3;
+
+      // 3. Velocity → speed multiplier (gentle — no dramatic surges)
+      const vx = cx - prevMouseX;
+      const vy = cy - prevMouseY;
+      const vel = Math.sqrt(vx * vx + vy * vy);
+      speedMultTarget = 1.0 + Math.min(vel * 0.02, 0.8); // cap at 1.8×
+
+      // 4. Ripple intensity — very subtle
+      rippleTarget = Math.min(vel * 0.08, 6);
+
+      // 5. Glow halo — barely visible
+      glowAlpha = 0.04 + proximity * 0.06;
+
+      // 6. Spawn a particle at cursor position (throttled)
+      if (particles.length < MAX_PARTICLES && Math.random() < 0.45) {
+        particles.push({
+          x:       cx + (Math.random() - 0.5) * 20,
+          y:       cy,
+          vx:      (Math.random() - 0.5) * 0.8,
+          vy:      -(Math.random() * 1.2 + 0.4),  // drift upward
+          radius:  Math.random() * 2 + 1,
+          opacity: Math.random() * 0.5 + 0.3,
+          life:    0,
+          maxLife: Math.floor(Math.random() * 50 + 50), // 50–100 frames
+        });
+      }
+    } else {
+      // Cursor left canvas area — gently reset
+      amplitudeTarget  = 1.0;
+      centerYTarget    = 0.5;
+      speedMultTarget  = 1.0;
+      rippleTarget     = 0.0;
+      glowAlpha        = 0.0;
+    }
+  }, { passive: true });
+
+  heroEl.addEventListener('mouseleave', () => {
+    inCanvas        = false;
+    amplitudeTarget = 1.0;
+    centerYTarget   = 0.5;
+    speedMultTarget = 1.0;
+    rippleTarget    = 0.0;
+    glowAlpha       = 0.0;
+  }, { passive: true });
+
+  /* ── Draw cursor glow halo ───────────────────────────────────── */
+  function drawCursorGlow(cssW, cssH) {
+    if (glowAlpha < 0.01 || !inCanvas) return;
+    const r = Math.min(cssW, cssH) * 0.22;
+    const grad = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, r);
+    grad.addColorStop(0,   `rgba(43, 109, 232, ${(glowAlpha * 0.55).toFixed(3)})`);
+    grad.addColorStop(0.4, `rgba(43, 109, 232, ${(glowAlpha * 0.18).toFixed(3)})`);
+    grad.addColorStop(1,   'rgba(43, 109, 232, 0)');
+    ctx.save();
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, cssW, cssH);
+    ctx.restore();
+  }
+
+  /* ── Draw floating particles ─────────────────────────────────── */
+  function updateParticles() {
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.life++;
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.vx += (Math.random() - 0.5) * 0.1; // slight horizontal wander
+
+      const progress = p.life / p.maxLife;
+      const alpha    = p.opacity * (1 - progress) * (1 - progress); // easeOut fade
+
+      if (p.life >= p.maxLife || alpha < 0.01) {
+        particles.splice(i, 1);
+        continue;
+      }
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius * (1 - progress * 0.5), 0, Math.PI * 2);
+      ctx.fillStyle   = `rgba(43, 109, 232, ${alpha.toFixed(3)})`;
+      ctx.shadowColor = 'rgba(43, 109, 232, 0.8)';
+      ctx.shadowBlur  = 6;
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  /* ── Draw a single wave layer ────────────────────────────────── */
+  function drawWave(wave, cssW, cssH) {
+    const midY = cssH * centerYCurrent; // follows cursor Y
+    const pts  = [];
+
+    for (let x = 0; x <= cssW; x += 2) {
+      // Base sine motion
+      let y = midY
+        + Math.sin(x * wave.frequency + wave.phase) * wave.amplitude * amplitudeCurrent
+        + Math.sin(x * wave.frequency * 0.5 + wave.phase * 1.3) * (wave.amplitude * 0.35) * amplitudeCurrent;
+
+      // Cursor ripple distortion — Gaussian envelope centred at mouseX
+      if (inCanvas && rippleStrength > 0.5) {
+        const dx       = x - mouseX;
+        const sigma    = 80;                                         // ripple spread radius
+        const envelope = Math.exp(-(dx * dx) / (2 * sigma * sigma)); // Gaussian
+        const ripple   = Math.sin(dx * 0.12) * rippleStrength * envelope;
+        y += ripple;
+      }
+
+      pts.push({ x, y });
+    }
+
+    // Horizontal gradient — transparent → solid → transparent
+    const grad = ctx.createLinearGradient(0, 0, cssW, 0);
+    grad.addColorStop(0,    'rgba(43, 109, 232, 0)');
+    grad.addColorStop(0.12, `rgba(43, 109, 232, ${(wave.opacity * 0.4).toFixed(3)})`);
+    grad.addColorStop(0.45, `rgba(43, 109, 232, ${wave.opacity.toFixed(3)})`);
+    grad.addColorStop(0.78, `rgba(43, 109, 232, ${(wave.opacity * 0.6).toFixed(3)})`);
+    grad.addColorStop(1,    'rgba(43, 109, 232, 0)');
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < pts.length; i++) {
+      const prev = pts[i - 1];
+      const cpx  = (prev.x + pts[i].x) / 2;
+      ctx.quadraticCurveTo(prev.x, prev.y, cpx, (prev.y + pts[i].y) / 2);
+    }
+    ctx.strokeStyle = grad;
+    ctx.lineWidth   = wave.width + (amplitudeCurrent - 1) * 0.5; // line thickens slightly on boost
+    ctx.shadowColor = 'rgba(43, 109, 232, 0.7)';
+    ctx.shadowBlur  = (10 + rippleStrength * 0.4) * amplitudeCurrent;
+    ctx.stroke();
+
+    // Data dots — only on primary wave, more appear during interaction
+    if (wave.width > 1) {
+      const dotCount = Math.floor(8 + amplitudeCurrent * 6);
+      const step     = Math.floor(pts.length / dotCount);
+      for (let i = 0; i < pts.length; i += step) {
+        const pt  = pts[i];
+        const opc = (wave.opacity * 0.85 * amplitudeCurrent).toFixed(3);
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 1.8 + (amplitudeCurrent - 1) * 0.8, 0, Math.PI * 2);
+        ctx.fillStyle   = `rgba(43, 109, 232, ${opc})`;
+        ctx.shadowBlur  = 6 + rippleStrength * 0.2;
+        ctx.fill();
+      }
+    }
+    ctx.restore();
+  }
+
+  /* ── Main animation loop ─────────────────────────────────────── */
+  function animate() {
+    if (!isVisible) { rafId = null; return; }
+
+    const cssW = canvas.offsetWidth;
+    const cssH = canvas.offsetHeight;
+
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+
+    // Smooth lerp all interactive state (different speeds for feel)
+    amplitudeCurrent  += (amplitudeTarget   - amplitudeCurrent)  * 0.06;
+    centerYCurrent    += (centerYTarget     - centerYCurrent)    * 0.04; // slow drift feels organic
+    speedMult         += (speedMultTarget   - speedMult)         * 0.08;
+    rippleStrength    += (rippleTarget      - rippleStrength)    * 0.10;
+    glowAlpha         += (((inCanvas ? glowAlpha : 0) || 0)     - glowAlpha) * 0.06;
+
+    // Decay speed and ripple back to baseline when cursor is idle
+    speedMultTarget  += (1.0 - speedMultTarget) * 0.07;
+    rippleTarget     += (0.0 - rippleTarget)    * 0.08;
+
+    // Draw layers — back to front
+    drawCursorGlow(cssW, cssH);
+
+    waves.forEach(wave => {
+      wave.phase += wave.baseSpeed * speedMult;
+      drawWave(wave, cssW, cssH);
+    });
+
+    updateParticles();
+
+    rafId = requestAnimationFrame(animate);
+  }
+
+  /* ── IntersectionObserver ────────────────────────────────────── */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        isVisible = true;
+        canvas.classList.add('on');
+        if (!rafId) rafId = requestAnimationFrame(animate);
+      } else {
+        isVisible = false;
+        canvas.classList.remove('on');
+      }
+    });
+  }, { threshold: 0.05 });
+
+  resize();
+  io.observe(heroEl);
 })();
