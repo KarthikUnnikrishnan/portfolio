@@ -219,6 +219,8 @@ function initParticles() {
 
 /* ── 3. VANILLA-TILT 3D on project cards ─────────────────────────── */
 window.addEventListener('load', () => {
+  // Skip 3D tilt entirely on touch / mobile devices
+  if (!matchMedia('(pointer: fine)').matches) return;
   if (typeof VanillaTilt === 'undefined') return;
 
   const cards = document.querySelectorAll('.proj-card');

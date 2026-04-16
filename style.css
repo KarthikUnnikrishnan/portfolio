@@ -136,7 +136,7 @@ button {
 }
 
 .loader-text {
-  font-size: clamp(2.5rem, 8vw, 5.5rem);
+  font-size: clamp(1.6rem, 5.5vw, 4rem);
   font-weight: 800;
   color: var(--bg);
   letter-spacing: -0.03em;
@@ -145,7 +145,7 @@ button {
 
 /* Loading bar track */
 .loader-bar-wrap {
-  width: clamp(120px, 30vw, 220px);
+  width: clamp(200px, 55vw, 420px);
   height: 2px;
   background: rgba(255, 255, 255, 0.12);
   border-radius: 999px;
@@ -634,7 +634,7 @@ body.cursor-click #cursorDot {
 }
 
 .hero-particles.on {
-  opacity: 0.5;
+  opacity: 0.12; /* Reduced visual noise */
 }
 
 /* Massive background name — right-aligned watermark text */
@@ -646,7 +646,7 @@ body.cursor-click #cursorDot {
   left: auto;
   z-index: 1;
   font-size: clamp(8rem, 13.5vw, 18rem);
-  font-weight: 900;
+  font-weight: 800;
   line-height: 0.85;
   color: var(--ink);
   letter-spacing: -0.04em;
@@ -656,25 +656,24 @@ body.cursor-click #cursorDot {
   user-select: none;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.7s var(--ease);
+  transition: opacity 1.5s var(--ease);
   will-change: translate;
 }
 
 .hero-bg-name.on {
-  opacity: 0.4;
+  opacity: 0.05;
 }
 
 /* Tagline — bottom-left, overlapping the huge name */
 .hero-tagline {
   position: absolute;
   left: 32px;
-  /* Centered perfectly in the upper middle area to fill empty space */
-  top: 50%;
+  top: 42%; /* Slightly shifted upward for better composition */
   transform: translateY(-50%);
   z-index: 2;
   opacity: 0;
-  transition: opacity 0.65s var(--ease) 0.25s, transform 0.65s var(--ease) 0.25s;
-  translate: 0 12px;
+  transition: opacity 1.2s var(--ease) 0.2s, translate 1.2s var(--ease) 0.2s;
+  translate: 0 8px; /* Softer slide-in */
 }
 
 .hero-tagline.on {
@@ -683,42 +682,40 @@ body.cursor-click #cursorDot {
 }
 
 .hero-tagline p {
-  /* Significantly increased font size to occupy more of the empty hero space */
-  font-size: clamp(2rem, 5vw, 4.2rem);
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.035em;
+  /* Taller headline, cleaner font-weight */
+  font-size: clamp(2.5rem, 6vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
   color: var(--ink);
   max-width: 800px;
-  /* Optional: bounds the text width */
 }
 
 .hero-subtext {
   font-size: clamp(1rem, 1.5vw, 1.25rem);
   color: var(--muted);
-  max-width: 460px;
-  line-height: 1.6;
-  margin-top: 24px;
-  font-weight: 500;
+  max-width: 500px;
+  line-height: 1.7;
+  margin-top: 36px; /* Increased breathing room */
+  font-weight: 400; /* Calmer, cleaner feel */
 }
 
 .rotating-word {
   display: inline-block;
   color: var(--accent);
-  /* subtle blue color pop */
-  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
   opacity: 1;
   transform: translateY(0);
 }
 
 .rotating-word.out {
   opacity: 0;
-  transform: translateY(-15px);
+  transform: translateY(-8px);
 }
 
 .rotating-word.in {
   opacity: 0;
-  transform: translateY(15px);
+  transform: translateY(8px);
   transition: none;
   /* snap to bottom instantly before sliding up naturally */
 }
@@ -1333,11 +1330,12 @@ body.cursor-click #cursorDot {
 /* 1. Medium / Tablet Landscape (max 1024px) */
 @media (max-width: 1024px) {
   .hero-tagline p {
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 700;
   }
 
   .hero-tagline {
-    top: 50%;
+    top: 42%;
     left: 24px;
   }
 
@@ -1403,13 +1401,14 @@ body.cursor-click #cursorDot {
 
   .hero-tagline {
     left: 18px;
-    top: 50%;
+    top: 42%;
     max-width: 90%;
   }
 
   .hero-tagline p {
-    font-size: 3.2rem;
-    line-height: 1.1;
+    font-size: 3.4rem;
+    line-height: 1.05;
+    font-weight: 700;
   }
 
   .hero-scroll {
